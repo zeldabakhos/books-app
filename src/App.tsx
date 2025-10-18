@@ -1,0 +1,116 @@
+import { useState } from "react"
+import { BookOpen } from "lucide-react"
+import BookCard from "./components/BookCard"
+import AuthorCard from "./components/AuthorCard"
+import SearchBar from "./components/SearchBar"
+import { staticBooks, staticAuthors } from "./mockData/staticData"
+
+const App = () => {
+	// State
+	const [activeTab, setActiveTab] = useState("books")
+	const [searchTerm, setSearchTerm] = useState("")
+
+	const getAuthorById = (authorId: number) => {
+		return staticAuthors.find((author) => author.id === authorId)
+	}
+
+	const getBookCountByAuthor = (authorId: number) => {
+		return staticBooks.filter((book) => book.authorId === authorId).length
+	}
+
+	const filteredBooks = staticBooks.filter((book) => {
+		const author = getAuthorById(book.authorId)
+		return (
+			book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			author?.name.toLowerCase().includes(searchTerm.toLowerCase())
+		)
+	})
+
+	const filteredAuthors = staticAuthors.filter((author) =>
+		author.name.toLowerCase().includes(searchTerm.toLowerCase())
+	)
+
+	return (
+		<div className="min-h-screen bg-gray-100">
+			{/* Header */}
+			<header className="bg-blue-600 text-white shadow-lg">
+				<div className="container mx-auto px-4 py-6">
+					<div className="flex items-center gap-3 mb-4">
+						<BookOpen className="w-8 h-8" />
+						<h1 className="text-3xl font-bold">Books & Authors Library</h1>
+					</div>
+					<SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+				</div>
+			</header>
+
+			{/* Navigation Tabs */}
+			<div className="bg-white shadow">
+				<div className="container mx-auto px-4">
+					<div className="flex gap-8">
+						<button
+							onClick={() => setActiveTab("books")}
+							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
+								activeTab === "books"
+									? "border-blue-600 text-blue-600"
+									: "border-transparent text-gray-500 hover:text-gray-700"
+							}`}
+						>
+							Books ({filteredBooks.length})
+						</button>
+						<button
+							onClick={() => setActiveTab("authors")}
+							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
+								activeTab === "authors"
+									? "border-blue-600 text-blue-600"
+									: "border-transparent text-gray-500 hover:text-gray-700"
+							}`}
+						>
+							Authors ({filteredAuthors.length})
+						</button>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Content */}
+			<main className="container mx-auto px-4 py-8">
+				{activeTab === "books" && (
+					<div className="space-y-4">
+						{filteredBooks.length > 0 ? (
+							filteredBooks.map((book) => (
+								<BookCard
+									key={book.id}
+									book={book}
+									author={getAuthorById(book.authorId)!}
+								/>
+							))
+						) : (
+							<div className="text-center py-12 text-gray-500">
+								No books found matching your search.
+							</div>
+						)}
+					</div>
+				)}
+
+				{activeTab === "authors" && (
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{filteredAuthors.length > 0 ? (
+							filteredAuthors.map((author) => (
+								<AuthorCard
+									key={author.id}
+									author={author}
+									bookCount={getBookCountByAuthor(author.id)}
+								/>
+							))
+						) : (
+							<div className="col-span-2 text-center py-12 text-gray-500">
+								No authors found matching your search.
+							</div>
+						)}
+					</div>
+				)}
+			</main>
+		</div>
+	)
+}
+
+export default App
