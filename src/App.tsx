@@ -33,7 +33,7 @@ const App = () => {
 	return (
 		<div className="min-h-screen bg-gray-100">
 			{/* Header */}
-			<header className="bg-blue-600 text-white shadow-lg">
+			<header className="bg-indigo-600 text-white shadow-lg">
 				<div className="container mx-auto px-4 py-6">
 					<div className="flex items-center gap-3 mb-4">
 						<BookOpen className="w-8 h-8" />
@@ -51,7 +51,7 @@ const App = () => {
 							onClick={() => setActiveTab("books")}
 							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
 								activeTab === "books"
-									? "border-blue-600 text-blue-600"
+									? "border-indigo-600 text-indigo-600"
 									: "border-transparent text-gray-500 hover:text-gray-700"
 							}`}
 						>
@@ -61,7 +61,7 @@ const App = () => {
 							onClick={() => setActiveTab("authors")}
 							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
 								activeTab === "authors"
-									? "border-blue-600 text-blue-600"
+									? "border-indigo-600 text-indigo-600"
 									: "border-transparent text-gray-500 hover:text-gray-700"
 							}`}
 						>
