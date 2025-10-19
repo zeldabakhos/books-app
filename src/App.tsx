@@ -9,6 +9,8 @@ import type { Author } from "./types/Authors"
 import AddBookForm from "./components/tabs/AddBookForm"
 import type { Book } from "./types/Book"
 
+import NavigationTabs from "./components/NavogationTabs"
+
 const App = () => {
 	// State
 	const [activeTab, setActiveTab] = useState("books")
@@ -64,52 +66,12 @@ const App = () => {
 			</header>
 
 			{/* Navigation Tabs */}
-			<div className="bg-white shadow">
-				<div className="container mx-auto px-4">
-					<div className="flex gap-8">
-						<button
-							onClick={() => setActiveTab("books")}
-							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
-								activeTab === "books"
-									? "border-indigo-600 text-indigo-600"
-									: "border-transparent text-gray-500 hover:text-gray-700"
-							}`}
-						>
-							Books ({filteredBooks.length})
-						</button>
-						<button
-							onClick={() => setActiveTab("authors")}
-							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
-								activeTab === "authors"
-									? "border-indigo-600 text-indigo-600"
-									: "border-transparent text-gray-500 hover:text-gray-700"
-							}`}
-						>
-							Authors ({filteredAuthors.length})
-						</button>
-						<button
-							onClick={() => setActiveTab("add-author")}
-							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
-								activeTab === "add-author"
-									? "border-indigo-600 text-indigo-600"
-									: "border-transparent text-gray-500 hover:text-gray-700"
-							}`}
-						>
-							Add new author
-						</button>
-						<button
-							onClick={() => setActiveTab("add-book")}
-							className={`py-4 px-2 border-b-2 font-semibold transition-colors ${
-								activeTab === "add-book"
-									? "border-indigo-600 text-indigo-600"
-									: "border-transparent text-gray-500 hover:text-gray-700"
-							}`}
-						>
-							Add new book
-						</button>
-					</div>
-				</div>
-			</div>
+			<NavigationTabs
+				activeTab={activeTab}
+				setActiveTab={setActiveTab}
+				booksCount={filteredBooks.length}
+				authorsCount={filteredAuthors.length}
+			/>
 
 			{/* Main Content */}
 			<main className="container mx-auto px-4 py-8">
