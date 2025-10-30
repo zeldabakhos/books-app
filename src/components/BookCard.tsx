@@ -1,20 +1,9 @@
+import type { Book } from "../types/Book"
+import type { Author } from "../types/Authors"
+
 interface BookCardProps {
-	book: {
-		id: number
-		title: string
-		authorId: number
-		isbn: string
-		publishedYear: number
-		description: string
-		coverUrl: string
-	}
-	author: {
-		id: number
-		name: string
-		bio: string
-		birthYear: number
-		country: string
-	}
+	book: Book
+	author: Author
 }
 
 const BookCard = ({ book, author }: BookCardProps) => {
