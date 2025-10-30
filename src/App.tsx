@@ -5,42 +5,39 @@ import AuthorCard from "./components/AuthorCard"
 import SearchBar from "./components/SearchBar"
 import { staticBooks, staticAuthors } from "./mockData/staticData"
 import AddAuthorForm from "./components/tabs/AddAuthorForm"
-import type { Author } from "./types/Authors"
 import AddBookForm from "./components/tabs/AddBookForm"
+import NavigationTabs from "./components/NavogationTabs"
+import type { Author } from "./types/Authors"
 import type { Book } from "./types/Book"
 
-import NavigationTabs from "./components/NavogationTabs"
-
 const App = () => {
-	// State
+	// ✅ State management
+	const [authors, setAuthors] = useState<Author[]>(staticAuthors)
+	const [books, setBooks] = useState<Book[]>(staticBooks)
 	const [activeTab, setActiveTab] = useState("books")
 	const [searchTerm, setSearchTerm] = useState("")
 
+	// ✅ Add new author
 	const handleAddAuthor = (author: Author) => {
-		console.log("New author:", author)
-		// Here you would typically:
-		// - Call your API to save the author
-		// - Update your state
-		// - Show a success message
+		const authorWithId = { ...author, id: Date.now() }
+		setAuthors((prev) => [...prev, authorWithId])
+		setActiveTab("authors") // switch back automatically
 	}
 
+	// ✅ Add new book
 	const handleAddBook = (book: Book) => {
-		console.log("New book:", book)
-		// Here you would typically:
-		// - Call your API to save the book
-		// - Update your state
-		// - Show a success message
+		const bookWithId = { ...book, id: Date.now() }
+		setBooks((prev) => [...prev, bookWithId])
+		setActiveTab("books") // switch back automatically
 	}
 
-	const getAuthorById = (authorId: number) => {
-		return staticAuthors.find((author) => author.id === authorId)
-	}
+	// ✅ Helpers
+	const getAuthorById = (authorId: number) => authors.find((a) => a.id === authorId)
+	const getBookCountByAuthor = (authorId: number) =>
+		books.filter((book) => book.authorId === authorId).length
 
-	const getBookCountByAuthor = (authorId: number) => {
-		return staticBooks.filter((book) => book.authorId === authorId).length
-	}
-
-	const filteredBooks = staticBooks.filter((book) => {
+	// ✅ Filters
+	const filteredBooks = books.filter((book) => {
 		const author = getAuthorById(book.authorId)
 		return (
 			book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -48,7 +45,7 @@ const App = () => {
 		)
 	})
 
-	const filteredAuthors = staticAuthors.filter((author) =>
+	const filteredAuthors = authors.filter((author) =>
 		author.name.toLowerCase().includes(searchTerm.toLowerCase())
 	)
 
@@ -75,6 +72,7 @@ const App = () => {
 
 			{/* Main Content */}
 			<main className="container mx-auto px-4 py-8">
+				{/* 📚 Books tab */}
 				{activeTab === "books" && (
 					<div className="space-y-4 flex flex-col flex-wrap">
 						{filteredBooks.length > 0 ? (
@@ -93,6 +91,7 @@ const App = () => {
 					</div>
 				)}
 
+				{/* 👩‍💼 Authors tab */}
 				{activeTab === "authors" && (
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 						{filteredAuthors.length > 0 ? (
@@ -111,15 +110,17 @@ const App = () => {
 					</div>
 				)}
 
+				{/* ➕ Add new author */}
 				{activeTab === "add-author" && (
 					<AddAuthorForm
 						onSubmit={handleAddAuthor}
-						onCancel={() => console.log("Cancelled")}
+						onCancel={() => setActiveTab("authors")}
 					/>
 				)}
 
+				{/* ➕ Add new book */}
 				{activeTab === "add-book" && (
-					<AddBookForm authors={staticAuthors} onSubmit={handleAddBook} />
+					<AddBookForm authors={authors} onSubmit={handleAddBook} />
 				)}
 			</main>
 		</div>
