@@ -99,7 +99,7 @@ const App = () => {
 								<AuthorCard
 									key={author.id}
 									author={author}
-									bookCount={getBookCountByAuthor(author.id)}
+									bookCount={getBookCountByAuthor(author.id ?? 0)}
 								/>
 							))
 						) : (

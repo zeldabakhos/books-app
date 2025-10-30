@@ -47,7 +47,7 @@ const AddAuthorForm = ({ onSubmit, onCancel }: AddAuthorFormProps) => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (validate()) {
-			onSubmit({ ...formData })
+			onSubmit({ ...formData, id: undefined })
 			setFormData({
 				name: "",
 				bio: "",

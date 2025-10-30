@@ -1,4 +1,4 @@
-import { staticBooks, staticAuthors } from "../mockData/staticData"
+import { staticBooks } from "../mockData/staticData"
 import type { Book } from "../types/Book"
 
 export const booksService = {
@@ -18,8 +18,9 @@ export const booksService = {
   createBook: async (bookData: Omit<Book, "id">): Promise<Book> => {
     await new Promise((resolve) => setTimeout(resolve, 300))
     const newBook: Book = { id: Date.now(), ...bookData }
-    staticBooks.push(newBook)
+    staticBooks.push(newBook as Required<Book>)
     return newBook
+
   },
 
   // Filter books by author

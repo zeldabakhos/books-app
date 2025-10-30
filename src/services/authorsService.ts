@@ -18,8 +18,9 @@ export const authorsService = {
 	createAuthor: async (authorData: Omit<Author, "id">): Promise<Author> => {
 		await new Promise((resolve) => setTimeout(resolve, 300))
 		const newAuthor: Author = { id: Date.now(), ...authorData }
-		staticAuthors.push(newAuthor)
-		return newAuthor
+        staticAuthors.push(newAuthor as Required<Author>)
+        return newAuthor
+
 	},
 
 	// ✅ Filter authors by country

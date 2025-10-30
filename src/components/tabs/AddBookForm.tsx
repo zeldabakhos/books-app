@@ -11,7 +11,7 @@ interface AddBookFormProps {
 }
 
 const AddBookForm = ({ authors, onSubmit, onCancel }: AddBookFormProps) => {
-	const [formData, setFormData] = useState<Book>({
+const [formData, setFormData] = useState<Omit<Book, "id">>({
 		title: "",
 		authorId: 0,
 		isbn: "",
@@ -137,7 +137,7 @@ const AddBookForm = ({ authors, onSubmit, onCancel }: AddBookFormProps) => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (validate()) {
-			onSubmit(formData)
+			onSubmit({ ...formData, id: undefined })
 			setFormData({
 				title: "",
 				authorId: 0,
